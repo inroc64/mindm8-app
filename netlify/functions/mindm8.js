@@ -5,6 +5,13 @@ exports.handler = async function (event, context) {
     const body = JSON.parse(event.body);
     const userMessage = body.message;
 
+    if (!process.env.OPENAI_API_KEY) {
+  return {
+    statusCode: 500,
+    body: JSON.stringify({ reply: "Missing OpenAI API key!" })
+  };
+}
+
     const response = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
